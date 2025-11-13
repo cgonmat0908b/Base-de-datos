@@ -5,7 +5,7 @@ CREATE DATABASE empresa_transporte;
 USE empresa_transporte;
 
 CREATE TABLE Camioneros(
-DNI VARCHAR(9) PRIMARY KEY ,
+DNI CHAR(9) PRIMARY KEY ,
 Nombre VARCHAR (20),
 Tlf INT,
 Direccion VARCHAR(30),
@@ -21,7 +21,7 @@ Direccion VARCHAR(30)
 );
 
 CREATE TABLE Camiones (
-Matricula VARCHAR (7)  PRIMARY KEY,
+Matricula CHAR (7)  PRIMARY KEY,
 Modelo VARCHAR (20),
 Tipo VARCHAR (20),
 Potencia INT
@@ -29,7 +29,7 @@ Potencia INT
 
 CREATE TABLE Paquetes(
 Codigo INT AUTO_INCREMENT PRIMARY KEY,
-DNI_camioneros VARCHAR(9),
+DNI_camioneros CHAR(9),
 Codigo_provincia INT,
 Descripcion VARCHAR(20),
 Destinatario VARCHAR(20),
@@ -39,9 +39,10 @@ FOREIGN KEY (Codigo_provincia) REFERENCES Provincias(Codigo)
 );
 
 CREATE TABLE Conduce(
-Fecha DATE PRIMARY KEY,
-Matricula VARCHAR(7),
-DNI_camionero VARCHAR(9),
+Fecha DATE,
+Matricula CHAR(7),
+DNI_camionero CHAR(9),
+PRIMARY KEY (Fecha),
 FOREIGN KEY (Matricula) REFERENCES Camiones(Matricula),
 FOREIGN KEY (DNI_camionero) REFERENCES Camioneros(DNI)
 );
