@@ -2,10 +2,10 @@
 -- Borra la base de datos Tienda De Moviles si existe
 DROP DATABASE IF EXISTS Tienda_De_Moviles;
 
--- Crea la base de datos Instituto
+-- Crea la base de datos Tienda_De_Moviles
 CREATE DATABASE Tienda_De_Moviles;
 
--- Selecciono la base de datos "Instituto"
+-- Selecciono la base de datos Tienda_De_Moviles
 USE Tienda_De_Moviles;
 
 -- Crea la tabla Empleados
