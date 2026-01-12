@@ -119,5 +119,104 @@ SELECT * FROM usuarios WHERE nombre LIKE 'B%A';
   -- Redondea el numero a decimales
   SELECT ROUND(2570.5234, 2);
   
-  -- Muestra los usuarios que hayan nacido en el 2013 ordenador por fecha de nacimiento
+  -- Muestra los usuarios que hayan nacido en el 2013 ordenados por fecha de nacimiento
+  SELECT * FROM usuarios WHERE fecha_nacimiento >= '2013-01-01' AND fecha_nacimiento < DATE_ADD('2013-01-01', INTERVAL 1 YEAR) ORDER BY fecha_nacimiento;
+  
+  -- Segunda opción de realizar la misma consulta, usando el operador + en vez de DATE_ADD.
+  SELECT * FROM usuarios WHERE fecha_nacimiento >= '2013-01-01' AND fecha_nacimiento < ('2013-01-01' + INTERVAL 1 YEAR) ORDER BY fecha_nacimiento;
+  
+  -- Muestra la diferenia en dias entre las dos fechas indicadas.
+  SELECT DATEDIFF('2022-02-23', '2022-01-01'); -- Positivo
+  SELECT DATEDIFF('2022-01-01', '2022-02-23'); -- Negativo
+  
+  SELECT '2013-01-01' - INTERVAL 12 MONTH;
+  
+  -- Consulta de resumen usando GROUP BY
+  
+  -- Número de polideportivos que hay en cada ciudad
+  SELECT ciudad, COUNT(*) AS cantidad_polideportivos FROM polideportivos GROUP BY ciudad ORDER BY ciudad;
+  
+  -- Cuantos usuarios hay en cada ciudad
+  SELECT ciudad, COUNT(*) N_Usuarios FROM usuarios GROUP BY ciudad ORDER BY ciudad;
+  
+  -- Cuántos polideportivos hay en cada ciudad, solamente aquellas con más de 10 
+  -- Para añadir clausulas al ORDER BY ha de usarse HAVING en vez de WHERE.
+  SELECT ciudad, COUNT(*) N_Usuarios FROM polideportivos GROUP BY ciudad HAVING COUNT(*) > 10 ORDER BY ciudad;
+  
+  -- Cuantas pistas de cada deporte hay?
+  SELECT * FROM reservas.pistas;
+  SELECT tipo, COUNT(*) N_Pistas FROM pistas GROUP BY tipo;
+  
+  -- Cuantas pista de cada deporte hay, solo mostrando los deportes con más de 50 pistas
+  SELECT tipo, COUNT(*) N_Pistas FROM pistas GROUP BY tipo HAVING COUNT(*) > 50 ORDER BY tipo;
+  
+  -- Quiero saber el precio promedio de cada tipo de pista
+  SELECT tipo, AVG(precio) AS Precio_Medio, COUNT(*) N_Pistas FROM pistas GROUP BY tipo;
+  
+  -- Quiero saber los tipos de pistas que tiene un precio medio mayor a 9€
+  SELECT tipo, ROUND(AVG(precio),2) AS Precio_Min, COUNT(*) N_Pistas 
+  FROM pistas GROUP BY tipo HAVING ROUND(AVG(precio),2) > 9;
+  
+  -- ¿Cuál es la pista más barata y su tipo de pista más barata? 
+  SELECT tipo, MIN(precio) precio_min FROM pistas GROUP BY tipo
+  ORDER BY MIN(precio) ASC LIMIT 1;
+  
+  -- ¿Cuál es la pista más cara y su tipo de pista?
+  SELECT tipo, MAX(precio) precio_max FROM pistas GROUP BY tipo
+  ORDER BY MAX(precio) DESC LIMIT 1;
+  
+  -- Consultas Multitablas
+  
+  -- Mostramos la información de las pistas con sus reservas
+  SELECT pistas.id 'pistas_id', codigo, tipo, reservas.id 'reservas_id',
+  fecha_reserva, fecha_uso, id_pista
+  FROM pistas, reservas
+  WHERE pistas.id = reservas.id_pista
+  ORDER BY pistas.id;
+  
+ -- Muestra toda la información de los usuarios 
+ -- que hicieron alguna reserva
+ 
+ SELECT usuarios.id 'usuario_id', dni, nombre, apellidos, email,
+ ciudad, fecha_nacimiento,id_reserva, asiste, id_usuario
+ FROM usuarios, usuario_reserva
+ WHERE usuarios.id = id_usuario 
+ ORDER BY apellidos, nombre;
+ 
+ -- Con INNER JOIN, mucho más eficiente ya que no realiza el calculo cartesiano ese
+ 
+ SELECT usuarios.id 'usuario_id', dni, nombre, apellidos, email,
+ ciudad, fecha_nacimiento,id_reserva, asiste, id_usuario
+ FROM usuarios INNER JOIN usuario_reserva
+ ON usuarios.id = id_usuario
+ ORDER BY apellidos, nombre;
+ 
+ -- Mostrar toda la información de los polideportivos junto con las 
+ -- pistas que tiene cada uno de ellos
+ 
+ -- Con INNER JOIN 
+ SELECT polideportivos.id 'polideportivo_id', nombre, direccion,
+ ciudad, extension, pistas.id 'pista_id', codigo, tipo, precio,
+ id_polideportivo
+ FROM polideportivos
+ INNER JOIN pistas
+ ON polideportivos.id = id_polideportivo;
+ 
+ -- Sin INNER JOIN
+ SELECT polideportivos.id 'polideportivo_id', nombre, direccion,
+ ciudad, extension, pistas.id 'pista_id', codigo, tipo, precio,
+ id_polideportivo
+ FROM polideportivos, pistas
+ WHERE polideportivos.id = id_polideportivo;
+ 
+ 
+ 
+
+  
+  
+  
+  
+  
+  
+  
   
