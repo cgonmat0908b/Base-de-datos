@@ -1,4 +1,4 @@
--- Práctica Nº 1.- Consultas básicas.
+ -- Práctica Nº 1.- Consultas básicas.
 USE jardineria;
 
 -- Ej1 Obtener la ciudad y el teléfono de las oficinas de EEUU
@@ -100,7 +100,8 @@ GROUP BY codigo_pedido;
 -- Ej19. Obtener cuántos pedidos tiene cada cliente en cada estado.
 SELECT codigo_cliente, estado, COUNT(*) AS total_pedidos
 FROM pedido
-GROUP BY codigo_cliente, estado;
+GROUP BY codigo_cliente, estado
+ORDER BY codigo_cliente;
 
 -- Ej20. Obtener una lista con el código de oficina, ciudad, región y país de aquellas
 -- oficinas que estén en países que cuyo nombre empiece por “E”.
