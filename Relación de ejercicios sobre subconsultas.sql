@@ -14,31 +14,31 @@ LIMIT 1;
 SELECT nombre 
 FROM producto
 WHERE codigo_producto = (
-    SELECT codigo_producto 
-    FROM detalle_pedido
-    ORDER BY cantidad DESC
-    LIMIT 1
+SELECT codigo_producto 
+FROM detalle_pedido
+ORDER BY cantidad DESC
+LIMIT 1
 );
 
 -- 3) Obtener el nombre de los clientes que hayan hecho pedidos en 2008.
-SELECT * FROM cliente  
-WHERE codigo_cliente = ANY(SELECT codigo_cliente FROM pedido WHERE YEAR(fecha_pedido) = 2008);
+SELECT nombre_cliente FROM cliente  
+WHERE codigo_cliente IN (SELECT codigo_cliente FROM pedido WHERE YEAR(fecha_pedido) = '2008');
 
 -- 4) Obtener los clientes que han pedido más de 200 unidades de cualquier producto.
 SELECT * FROM cliente
-WHERE codigo_cliente in
+WHERE codigo_cliente IN
 (SELECT codigo_cliente FROM pedido WHERE codigo_pedido IN 
 (SELECT codigo_pedido FROM detalle_pedido WHERE cantidad > 200));
 
 -- 5) Obtener los clientes que residen en ciudades donde no hay oficinas.
-SELECT * FROM cliente 
+SELECT DISTINCT * FROM cliente 
 WHERE ciudad NOT IN
 (SELECT ciudad FROM oficina);
 
 -- 6) Obtener el nombre, los apellidos y el email de los empleados a cargo de Alberto Soria.
 SELECT nombre,apellido1, apellido2,email FROM empleado 
-WHERE codigo_jefe NOT IN
-(SELECT codigo_jefe FROM empleado WHERE nombre = 'Alberto' AND apellido1 = 'Soria');
+WHERE codigo_jefe IN
+(SELECT codigo_empleado FROM empleado WHERE nombre = 'Alberto' AND apellido1 = 'Soria');
 
 -- 7) Obtener el nombre de los clientes a los que no se les ha entregado a tiempo algún pedido.
 SELECT nombre_cliente FROM cliente
@@ -51,10 +51,18 @@ WHERE codigo_cliente IN
 (SELECT codigo_cliente FROM pago WHERE YEAR(fecha_pago) = 2007) ORDER BY nombre_cliente;
 
 -- 9) Obtener la gama, el proveedor y la cantidad de aquellos productos cuyo estado sea pendiente.
-SELECT p.gama, p.proveedor, d.cantidad
+SELECT p.gama, p.proveedor, SUM(cantidad)
 FROM producto p
-JOIN detalle_pedido d ON p.codigo_producto = d.codigo_producto
-JOIN pedido pe ON d.codigo_pedido = pe.codigo_pedido
-WHERE pe.estado = 'pendiente';
+INNER JOIN detalle_pedido d ON p.codigo_producto = d.codigo_producto
+INNER JOIN pedido pe ON d.codigo_pedido = pe.codigo_pedido
+WHERE pe.estado = 'pendiente'
+GROUP BY gama,proveedor;
+
+SELECT gama, proveedor, SUM(cantidad) FROM producto pr
+INNER JOIN detalle_pedido dp ON pr.codigo_producto = dp.codigo_producto
+WHERE dp.codigo_pedido IN(SELECT codigo_pedido FROM pedido WHERE estado = 'pendiente')
+GROUP BY gama, proveedor
+ORDER BY gama,proveedor; 
+
 
 

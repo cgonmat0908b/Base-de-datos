@@ -4,7 +4,7 @@ USE reservas;
 
 -- Las subconsultas son consultas anidadas dentro de otras sentencia SQL (SELECT, INSERT, UPDATE O DELETE)
 
--- Ej1: Obtenere todas las pistas cuyo precio sea superior al precio medio de todas las pistas
+-- Ej1: Obtener todas las pistas cuyo precio sea superior al precio medio de todas las pistas
 SELECT * FROM pistas WHERE precio > (SELECT AVG(precio) FROM pistas);
 
 -- Ejercicio 2: Listar los usuarios que viven en la misma ciudad que el usuario con ID 1

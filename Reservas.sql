@@ -1294,3 +1294,6 @@ INSERT INTO usuarios (id, dni, nombre, apellidos, email, ciudad, fecha_nacimient
 /* SQLINES DEMO *** ER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /* SQLINES DEMO *** ER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /* SQLINES DEMO *** ON_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+INSERT INTO usuarios(id,dni,nombre,apellidos)
