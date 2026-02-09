@@ -24,6 +24,7 @@ INSERT INTO clientes_pais SELECT *
 FROM cliente WHERE pais = "España";
 
 SELECT * FROM clientes_pais;
+
 -- 5) Eliminamos todas las filas de la tabla anterior.
 DELETE FROM clientes_pais;
 SELECT * FROM clientes_pais;
@@ -47,7 +48,19 @@ UPDATE producto SET precio_venta = precio_venta * 1.05 WHERE gama = "Aromaticas"
 SELECT * FROM producto WHERE gama = "Aromaticas";
 
 -- 10) Da de baja a todos los empleados que trabajen en la oficina de Londres.
+SELECT * FROM oficina WHERE ciudad = 'Londres';
+DELETE FROM empleado
+WHERE codigo_oficina = 'LON-UK';
+SELECT * FROM empleado WHERE codigo_oficina = 'LON-UK';
 
 -- 11) Elimina la oficina de Londres.
+DELETE FROM oficina
+WHERE ciudad = 'Londres';
+SELECT * FROM oficina WHERE ciudad = 'Londres';
 
 -- 12) Elimina aquellos clientes que no hayan realizado ningún pedido.
+DELETE FROM cliente
+WHERE codigo_cliente NOT IN (
+SELECT DISTINCT codigo_cliente
+FROM pedido
+);

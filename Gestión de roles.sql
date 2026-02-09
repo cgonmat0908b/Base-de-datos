@@ -42,3 +42,4 @@ SET DEFAULT ROLE 'lectura' TO 'leer1'@'localhost', 'leer2'@'localhost';
 SET DEFAULT ROLE'escritura' TO 'escribir1'@'localhost', 'escribir2'@'localhost';
 
 
+
