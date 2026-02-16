@@ -30,7 +30,7 @@ WHERE p.forma_pago = 'PayPal';
 SELECT DISTINCT c.*
 FROM cliente c
 JOIN pago p ON c.codigo_cliente = p.codigo_cliente
-WHERE p.forma_pago <> 'PayPal';
+WHERE p.forma_pago != 'PayPal';
 
 -- 6) Selecciona aquellos empleados que sean jefes.
 SELECT DISTINCT e.*
@@ -64,7 +64,7 @@ FROM cliente c
 JOIN pedido p ON c.codigo_cliente = p.codigo_cliente
 WHERE YEAR(p.fecha_pedido) = 2009
 GROUP BY c.codigo_cliente
-HAVING COUNT(*) >= 5;
+HAVING COUNT(p.codigo_cliente) >= 5;
 
 -- 11) Mostrar aquellos empleados que sean representantes de ventas de algún cliente de Madrid.
 SELECT DISTINCT e.*

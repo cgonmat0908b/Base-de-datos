@@ -48,19 +48,43 @@ UPDATE producto SET precio_venta = precio_venta * 1.05 WHERE gama = "Aromaticas"
 SELECT * FROM producto WHERE gama = "Aromaticas";
 
 -- 10) Da de baja a todos los empleados que trabajen en la oficina de Londres.
-SELECT * FROM oficina WHERE ciudad = 'Londres';
-DELETE FROM empleado
+UPDATE cliente 
+SET codigo_empleado_rep_ventas = NULL 
+WHERE codigo_empleado_rep_ventas IN (
+SELECT codigo_empleado 
+FROM empleado 
+WHERE codigo_oficina = 'LON-UK'
+);
+
+UPDATE empleado 
+SET codigo_jefe = NULL 
+WHERE codigo_jefe IN (
+SELECT * FROM (
+SELECT codigo_empleado 
+FROM empleado 
+WHERE codigo_oficina = 'LON-UK'
+) AS subconsulta
+);
+
+DELETE FROM empleado 
 WHERE codigo_oficina = 'LON-UK';
+
+-- Comprobación
 SELECT * FROM empleado WHERE codigo_oficina = 'LON-UK';
 
 -- 11) Elimina la oficina de Londres.
-DELETE FROM oficina
+DELETE FROM oficina 
 WHERE ciudad = 'Londres';
-SELECT * FROM oficina WHERE ciudad = 'Londres';
 
 -- 12) Elimina aquellos clientes que no hayan realizado ningún pedido.
-DELETE FROM cliente
+DELETE FROM pago 
 WHERE codigo_cliente NOT IN (
-SELECT DISTINCT codigo_cliente
-FROM pedido
+    SELECT DISTINCT codigo_cliente 
+    FROM pedido
+);
+
+DELETE FROM cliente 
+WHERE codigo_cliente NOT IN (
+    SELECT DISTINCT codigo_cliente 
+    FROM pedido
 );
