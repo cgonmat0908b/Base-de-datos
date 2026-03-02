@@ -74,3 +74,157 @@ WHERE Db = 'employees';
 -- Visualizar el codigo de un procedimiento
 SHOW CREATE PROCEDURE employees.department_getList;
 
+-- Modificar un procedimiento
+ALTER PROCEDURE employees.department_getList
+COMMENT 'Obtiene un listado de todos los departamentos';
+SHOW PROCEDURE STATUS
+WHERE Db = 'employees';
+
+-- Borrar un procedimiento
+DROP PROCEDURE IF EXISTS employees.department_getList;
+
+-- Crear un procedimieento que indique si un numero es positivo o negatio
+
+delimiter €€
+CREATE procedure signo(IN val int )
+begin
+	declare respuesta TEXT;
+	IF val = 0 THEN
+		set respuesta = "El cero no es ni positivo ni negativo";
+	elseif val > 0 THEN
+		set respuesta = CONCAT(val , " es positivo");
+	elseif val < 0 THEN
+		set respuesta = CONCAT(val , " es negativo");
+	end IF;
+    SELECT respuesta;
+end€€
+delimiter ;
+
+CALL signo(1);
+
+-- Crear procedimiento que convierta una nota numerica a una cualitativa (texto)
+
+DELIMITER €€
+CREATE PROCEDURE nota_a_txt(IN num INT)
+BEGIN
+	DECLARE respuesta VARCHAR(35);
+	IF num > 10 OR num < 0 THEN 
+		SET respuesta = "Numero introducido no valido";
+	ELSE 
+		CASE num 
+			WHEN 10 THEN SET respuesta = "Sobresaliente";
+			WHEN 9 THEN SET respuesta = "Sobresaliente";
+			WHEN 8 THEN SET respuesta = "Notable";
+			WHEN 7 THEN SET respuesta = "Notable";
+			WHEN 6 THEN SET respuesta = "Bien";
+			WHEN 5 THEN SET respuesta = "Aprobado";
+			ELSE SET respuesta = "Insuficiente";
+		END CASE;
+	END IF;
+SELECT respuesta;
+
+END €€
+DELIMITER ;
+
+CALL nota_a_txt(11);
+CALL nota_a_txt(-5);
+CALL nota_a_txt(10);
+CALL nota_a_txt(7);
+CALL nota_a_txt(6);
+CALL nota_a_txt(5);
+
+-- Estructuras de repeticion Bucles, WHILE
+
+DELIMITER €€
+CREATE PROCEDURE bucle(INOUT num INT)
+BEGIN
+	DECLARE i INT DEFAULT 1;
+    WHILE i <= 5 DO
+		SET num = num + 1;
+        SET i = i + 1;
+	END WHILE;
+END €€
+DELIMITER ;
+
+SET @num = 21;
+CALL bucle(@num);
+SELECT @num;
+
+-- Bucle REPEAT
+
+DELIMITER €€
+CREATE PROCEDURE bucleRepeat(INOUT num INT)
+BEGIN 
+	DECLARE i INT DEFAULT 1;
+    REPEAT
+		SET num = num + 1;
+        SET i = i + 1;
+	UNTIL i > 5
+	END REPEAT;
+END €€
+DELIMITER ;
+
+CALL bucleRepeat(@num);
+SELECT @num;
+
+-- Bucle LOOP LEAVE
+
+DELIMITER €€
+CREATE PROCEDURE loopp()
+BEGIN 
+	DECLARE contador BIGINT DEFAULT 1;
+    bucleLoop: LOOP
+		SET contador = contador + 1;
+		IF contador = 10 THEN
+			LEAVE bucleLoop;
+		END IF;
+        SELECT contador;
+	END LOOP bucleLoop;
+END €€;
+DELIMITER ;
+
+CALL loopp();
+
+
+-- Funciones
+
+DELIMITER €€
+CREATE FUNCTION ejemploFuncion() RETURNS VARCHAR(20)
+DETERMINISTIC
+BEGIN
+	RETURN 'hola';
+END €€
+DELIMITER ;
+
+SELECT ejemploFuncion();
+
+-- Funcion que devuelva el mayor de tres numeros pasados como parametros
+
+DELIMITER €€
+CREATE FUNCTION mayorDeTres( x INT, y INT, z INT) RETURNS INT
+DETERMINISTIC
+BEGIN
+	DECLARE num INT DEFAULT 0;
+	IF x > y THEN
+		SET num = x;
+	ELSE
+		SET num = y;
+	END IF;
+    
+    IF z > num THEN
+		SET num = z;
+	END IF;
+    RETURN num;
+END €€
+
+SELECT mayorDeTres(15,10,20);
+
+
+
+
+    
+
+
+
+
+
