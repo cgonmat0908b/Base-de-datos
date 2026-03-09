@@ -1,3 +1,5 @@
+USE employees;
+
 DELIMITER €€
 CREATE DEFINER=`root`@`localhost` PROCEDURE `cursorTest`()
 BEGIN
@@ -32,4 +34,4 @@ BEGIN
 END €€
 DELIMITER ;
 
-SELECT ()
+CALL cursorTest();

@@ -23,11 +23,61 @@ DELIMITER ;
 
 CALL ver();
 
+-- Base de datos en la que guardamos funciones/procedimientos de los ejercicios 3,4 y 5
+DROP DATABASE IF EXISTS funciones;
+CREATE DATABASE funciones;
+
 -- 3) Crea un procedimiento que muestre el año actual.
 DROP PROCEDURE IF EXISTS actual;
+DELIMITER €€
+
+CREATE PROCEDURE funciones.actual()
+BEGIN 
+	SELECT YEAR(NOW());
+END €€
+
+DELIMITER ;
+
+CALL funciones.actual();
 
 -- 4) Crea una función, llamado incrementa_en_uno, que incremente en uno un número entero que le
 -- pasemos a la función.
+DROP FUNCTION IF EXISTS incrementa_en_uno;
+DELIMITER €€
+
+-- Funcion
+CREATE FUNCTION funciones.incrementa_en_uno(num INT) RETURNS INT DETERMINISTIC
+BEGIN 
+	DECLARE numIncrementado INT DEFAULT 0;
+    SET numIncrementado = num + 1;
+    RETURN numIncrementado;
+END €€
+
+DELIMITER ;
+
+-- Uso de funcion
+SELECT funciones.incrementa_en_uno(5);
 
 -- 5) Crea una función que reciba como parámetro un número y devuelva TRUE si el número es impar y
 -- FALSE si el número es par.
+DROP FUNCTION IF EXISTS funciones.esPar;
+DELIMITER €€
+
+-- Funcion
+CREATE FUNCTION funciones.esPar(num INT) RETURNS VARCHAR(20) DETERMINISTIC
+BEGIN 
+	DECLARE resultado VARCHAR(20) DEFAULT "Desconocido";
+    
+    IF num % 2 = 0 THEN
+		SET resultado = "FALSE";
+	ELSE
+		SET resultado = "TRUE";
+	END IF;
+    
+	RETURN resultado;
+END €€
+
+DELIMITER ;
+
+SELECT funciones.esPar(8);
+    
