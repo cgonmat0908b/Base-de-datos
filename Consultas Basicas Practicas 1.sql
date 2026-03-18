@@ -1,4 +1,4 @@
-USE reservas;
+USE reservas;
 
  -- Muestra los nombre de los usuarios de manera ascendente
  SELECT nombre FROM usuarios ORDER BY nombre;
