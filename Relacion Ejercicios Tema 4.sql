@@ -1,3 +1,5 @@
+-- RELACIÓN DE EJERCICIOS SOBRE PROCEDIMIENTOS Y FUNCIONES
+
 -- 1) Realiza un procedimiento que muestre el texto “hola mundo” sobre la base de datos MySQL.
 USE MySQL;
 
@@ -80,4 +82,8 @@ END €€
 DELIMITER ;
 
 SELECT funciones.esPar(8);
-    
+
+
+-- RELACIÓN DE EJERCICIOS SOBRE TRIGGERS
+
+
