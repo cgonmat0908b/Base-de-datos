@@ -197,3 +197,4 @@ VALUES('Paco', '26548930Z'), ('Juan', '8547344b');
 UPDATE empleados SET dni = '2535343z' WHERE dni = '26548930Z';
 SELECT * FROM empleados;
 
+
